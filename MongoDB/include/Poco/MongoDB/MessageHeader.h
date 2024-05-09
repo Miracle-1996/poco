@@ -17,17 +17,16 @@
 #ifndef MongoDB_MessageHeader_INCLUDED
 #define MongoDB_MessageHeader_INCLUDED
 
-
 #include "Poco/MongoDB/MongoDB.h"
-#include "Poco/MongoDB/MessageHeader.h"
-
 
 namespace Poco {
+
+class BinaryReader;
+class BinaryWriter;
+
 namespace MongoDB {
 
-
 class Message; // Required to disambiguate friend declaration in MessageHeader.
-
 
 class MongoDB_API MessageHeader
 	/// Represents the message header which is always prepended to a
@@ -38,24 +37,14 @@ public:
 
 	enum OpCode
 	{
-#if false
 		// Opcodes deprecated in MongoDB 5.0
-		OP_REPLY [[deprecated]] = 1,
-		OP_UPDATE [[deprecated]] = 2001,
-		OP_INSERT [[deprecated]] = 2002,
-		OP_QUERY [[deprecated]] = 2004,
-		OP_GET_MORE [[deprecated]] = 2005,
-		OP_DELETE [[deprecated]] = 2006,
-		OP_KILL_CURSORS [[deprecated]] = 2007,
-#else
-		OP_REPLY = 1,
-		OP_UPDATE = 2001,
-		OP_INSERT = 2002,
-		OP_QUERY = 2004,
-		OP_GET_MORE = 2005,
-		OP_DELETE = 2006,
-		OP_KILL_CURSORS = 2007,
-#endif
+		OP_REPLY POCO_DEPRECATED("Use new wire protocol") = 1,
+		OP_UPDATE POCO_DEPRECATED("Use new wire protocol") = 2001,
+		OP_INSERT POCO_DEPRECATED("Use new wire protocol") = 2002,
+		OP_QUERY POCO_DEPRECATED("Use new wire protocol") = 2004,
+		OP_GET_MORE POCO_DEPRECATED("Use new wire protocol") = 2005,
+		OP_DELETE POCO_DEPRECATED("Use new wire protocol") = 2006,
+		OP_KILL_CURSORS POCO_DEPRECATED("Use new wire protocol") = 2007,
 
 		/// Opcodes supported in MongoDB 5.1 and later
 		OP_COMPRESSED = 2012,

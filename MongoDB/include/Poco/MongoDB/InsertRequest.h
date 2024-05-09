@@ -26,8 +26,7 @@
 namespace Poco {
 namespace MongoDB {
 
-//class [[deprecated]] InsertRequest;
-class InsertRequest;
+class POCO_DEPRECATED("Use new wire protocol") InsertRequest;
 
 class MongoDB_API InsertRequest: public RequestMessage
 	/// A request for inserting one or more documents to the database
@@ -55,7 +54,7 @@ public:
 		/// for the database "foo" and the collection "bar", the full collection name is
 		/// "foo.bar".
 
-	virtual ~InsertRequest();
+	~InsertRequest() override;
 		/// Destroys the InsertRequest.
 
 	Document& addNewDocument();
@@ -67,7 +66,7 @@ public:
 		/// Returns the documents to insert into the database.
 
 protected:
-	void buildRequest(BinaryWriter& writer);
+	void buildRequest(BinaryWriter& writer) override;
 
 private:
 	Int32 _flags;

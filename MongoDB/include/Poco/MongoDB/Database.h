@@ -72,11 +72,11 @@ public:
 		///
 		/// If the command fails, -1 is returned.
 
-	//[[deprecated]]
+	POCO_DEPRECATED("Use new wire protocol")
 	Poco::SharedPtr<Poco::MongoDB::QueryRequest> createCommand() const;
 		/// Creates a QueryRequest for a command. (old wire protocol)
 
-	//[[deprecated]]
+	POCO_DEPRECATED("Use new wire protocol")
 	Poco::SharedPtr<Poco::MongoDB::QueryRequest> createCountRequest(const std::string& collectionName) const;
 		/// Creates a QueryRequest to count the given collection.
 		/// The collectionname must not contain the database name. (old wire protocol)
@@ -86,12 +86,12 @@ public:
 		/// Creates a DeleteRequest to delete documents in the given collection.
 		/// The collectionname must not contain the database name. (old wire protocol)
 
-	//[[deprecated]]
+	POCO_DEPRECATED("Use new wire protocol")
 	Poco::SharedPtr<Poco::MongoDB::InsertRequest> createInsertRequest(const std::string& collectionName) const;
 		/// Creates an InsertRequest to insert new documents in the given collection.
 		/// The collectionname must not contain the database name. (old wire protocol)
 
-	//[[deprecated]]
+	POCO_DEPRECATED("Use new wire protocol")
 	Poco::SharedPtr<Poco::MongoDB::QueryRequest> createQueryRequest(const std::string& collectionName) const;
 		/// Creates a QueryRequest. (old wire protocol)
 		/// The collectionname must not contain the database name.
@@ -110,6 +110,7 @@ public:
 	Poco::SharedPtr<Poco::MongoDB::OpMsgCursor> createOpMsgCursor(const std::string& collectionName) const;
 		/// Creates OpMsgCursor. (new wire protocol)
 
+	POCO_DEPRECATED("Use new wire protocol")
 	Poco::MongoDB::Document::Ptr ensureIndex(Connection& connection,
 		const std::string& collection,
 		const std::string& indexName,
@@ -121,12 +122,12 @@ public:
 		/// Creates an index. The document returned is the result of a getLastError call.
 		/// For more info look at the ensureIndex information on the MongoDB website. (old wire protocol)
 
-	//[[deprecated]]
+	POCO_DEPRECATED("Use new wire protocol")
 	Document::Ptr getLastErrorDoc(Connection& connection) const;
 		/// Sends the getLastError command to the database and returns the error document.
 		/// (old wire protocol)
 
-	//[[deprecated]]
+	POCO_DEPRECATED("Use new wire protocol")
 	std::string getLastError(Connection& connection) const;
 		/// Sends the getLastError command to the database and returns the err element
 		/// from the error document. When err is null, an empty string is returned.

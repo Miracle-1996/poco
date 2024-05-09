@@ -18,6 +18,7 @@
 #define MongoDB_RequestMessage_INCLUDED
 
 
+#include "Poco/BinaryWriter.h"
 #include "Poco/MongoDB/MongoDB.h"
 #include "Poco/MongoDB/Message.h"
 #include <ostream>
@@ -26,17 +27,18 @@
 namespace Poco {
 namespace MongoDB {
 
-//class [[deprecated]] RequestMessage;
 class RequestMessage;
 
 class MongoDB_API RequestMessage: public Message
 	/// Base class for a request sent to the MongoDB server.
+	///
+	/// Generally deprecated but still supported for server hello (queryServerHello).
 {
 public:
 	explicit RequestMessage(MessageHeader::OpCode opcode);
 		/// Creates a RequestMessage using the given opcode.
 
-	virtual ~RequestMessage();
+	~RequestMessage() override;
 		/// Destroys the RequestMessage.
 
 	void send(std::ostream& ostr);

@@ -18,12 +18,8 @@
 #define MongoDB_Message_INCLUDED
 
 
-#include "Poco/Net/Socket.h"
-#include "Poco/BinaryReader.h"
-#include "Poco/BinaryWriter.h"
 #include "Poco/MongoDB/MongoDB.h"
 #include "Poco/MongoDB/MessageHeader.h"
-#include <sstream>
 
 
 namespace Poco {

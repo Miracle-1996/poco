@@ -84,12 +84,12 @@ private:
 inline Timestamp ObjectId::timestamp() const
 {
 	int time;
-	char* T = (char *) &time;
+	auto* T = reinterpret_cast<unsigned char *>(&time);
 	T[0] = _id[3];
 	T[1] = _id[2];
 	T[2] = _id[1];
 	T[3] = _id[0];
-	return Timestamp::fromEpochTime((time_t) time);
+	return Timestamp::fromEpochTime(static_cast<time_t>(time));
 }
 
 

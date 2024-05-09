@@ -26,7 +26,7 @@
 namespace Poco {
 namespace MongoDB {
 
-//class POCO_DEPRECATED("Use new wire protocol") UpdateRequest;
+class POCO_DEPRECATED("Use new wire protocol") UpdateRequest;
 
 class MongoDB_API UpdateRequest: public RequestMessage
 	/// This request is used to update a document in a database
@@ -56,7 +56,7 @@ public:
 		/// for the database "foo" and the collection "bar", the full collection name is
 		/// "foo.bar".
 
-	virtual ~UpdateRequest();
+	~UpdateRequest() override;
 		/// Destroys the UpdateRequest.
 
 	Document& selector();
@@ -72,7 +72,7 @@ public:
 		/// Sets the flags
 
 protected:
-	void buildRequest(BinaryWriter& writer);
+	void buildRequest(BinaryWriter& writer) override;
 
 private:
 	Flags       _flags;

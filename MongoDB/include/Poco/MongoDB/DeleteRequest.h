@@ -26,7 +26,7 @@
 namespace Poco {
 namespace MongoDB {
 
-//class POCO_DEPRECATED("Use new wire protocol") DeleteRequest;
+class POCO_DEPRECATED("Use new wire protocol") DeleteRequest;
 
 class MongoDB_API DeleteRequest: public RequestMessage
 	/// A DeleteRequest is used to delete one ore more documents from a database.
@@ -64,7 +64,7 @@ public:
 		/// If justOne is true, only the first matching document will
 		/// be removed (the same as using flag DELETE_SINGLE_REMOVE).
 
-	virtual ~DeleteRequest();
+	~DeleteRequest() override;
 		/// Destructor
 
 	Flags flags() const;
@@ -77,7 +77,7 @@ public:
 		/// Returns the selector document.
 
 protected:
-	void buildRequest(BinaryWriter& writer);
+	void buildRequest(BinaryWriter& writer) override;
 		/// Writes the OP_DELETE request to the writer.
 
 private:

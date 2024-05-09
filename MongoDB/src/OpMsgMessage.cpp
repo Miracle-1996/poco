@@ -14,8 +14,9 @@
 #include "Poco/MongoDB/OpMsgMessage.h"
 #include "Poco/MongoDB/MessageHeader.h"
 #include "Poco/MongoDB/Array.h"
+#include "Poco/BinaryWriter.h"
 #include "Poco/StreamCopier.h"
-#include "Poco/Logger.h"
+#include <map>
 
 #define POCO_MONGODB_DUMP	false
 

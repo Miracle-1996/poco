@@ -38,7 +38,7 @@ public:
 	JavaScriptCode();
 		/// Creates an empty JavaScriptCode object.
 
-	virtual ~JavaScriptCode();
+	~JavaScriptCode();
 		/// Destroys the JavaScriptCode.
 
 	void setCode(const std::string& code);

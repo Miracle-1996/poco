@@ -36,10 +36,8 @@ public:
 	{
 	}
 
-	virtual ~BSONReader()
+	virtual ~BSONReader() = default;
 		/// Destroys the BSONReader.
-	{
-	}
 
 	template<typename T>
 	void read(T& t)

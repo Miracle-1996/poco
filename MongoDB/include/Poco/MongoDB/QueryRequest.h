@@ -26,12 +26,13 @@
 namespace Poco {
 namespace MongoDB {
 
-//class [[deprecated]] QueryRequest;
 class QueryRequest;
 
 class MongoDB_API QueryRequest: public RequestMessage
 	/// A request to query documents in a MongoDB database
 	/// using an OP_QUERY request.
+	///
+	/// Generally deprecated but still supported for server hello (queryServerHello).
 {
 public:
 	enum Flags
@@ -83,7 +84,7 @@ public:
 		/// for the database "foo" and the collection "bar", the full collection name is
 		/// "foo.bar".
 
-	virtual ~QueryRequest();
+	~QueryRequest() override;
 		/// Destroys the QueryRequest.
 
 	Flags getFlags() const;
@@ -114,7 +115,7 @@ public:
 		/// Returns the field selector document.
 
 protected:
-	void buildRequest(BinaryWriter& writer);
+	void buildRequest(BinaryWriter& writer) override;
 
 private:
 	Flags       _flags;

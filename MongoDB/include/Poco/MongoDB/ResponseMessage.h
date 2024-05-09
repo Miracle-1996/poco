@@ -28,11 +28,12 @@
 namespace Poco {
 namespace MongoDB {
 
-//class [[deprecated]] ResponseMessage;
 class ResponseMessage;
 
 class MongoDB_API ResponseMessage: public Message
 	/// This class represents a response (OP_REPLY) from MongoDB.
+	///
+	/// Generally deprecated but still supported for server hello (queryServerHello).
 {
 public:
 	ResponseMessage();
@@ -41,7 +42,7 @@ public:
     ResponseMessage(const Int64& cursorID);
         /// Creates an ResponseMessage for existing cursor ID.
 
-	virtual ~ResponseMessage();
+	~ResponseMessage() override;
 		/// Destroys the ResponseMessage.
 
 	Int64 cursorID() const;
