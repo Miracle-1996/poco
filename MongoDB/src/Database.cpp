@@ -14,6 +14,7 @@
 
 #include "Poco/MongoDB/Database.h"
 #include "Poco/Base64Encoder.h"
+#include "Poco/MongoDB/Array.h"
 #include "Poco/MongoDB/Binary.h"
 #include "Poco/MD5Engine.h"
 #include "Poco/SHA1Engine.h"
@@ -338,6 +339,17 @@ Document::Ptr Database::queryBuildInfo(Connection& connection) const
 
 Document::Ptr Database::queryServerHello(Connection& connection) const
 {
+
+// https://www.mongodb.com/docs/manual/legacy-opcodes/
+//
+// NOTE
+// MongoDB 5.1 removes support for both OP_QUERY find operations and OP_QUERY commands.
+// As an exception, OP_QUERY is still supported for running the hello and isMaster commands
+// as part of the connection handshake.
+
+// The above is just to be able to detect an older MongoDB server, but is it
+// worth it to maintain obsolete commands just for that?
+
 	// hello can be issued on "config" system database
 	Poco::SharedPtr<Poco::MongoDB::QueryRequest> request = createCommand();
 	request->selector().add("hello", 1);
@@ -409,6 +421,62 @@ Poco::MongoDB::Document::Ptr Database::ensureIndex(Connection& connection, const
 	return getLastErrorDoc(connection);
 }
 
+Poco::MongoDB::Document::Ptr Database::createIndex(
+	Connection& connection,
+	const std::string& collection,
+	const IndexedFields& indexedFields,
+	const std::string &indexName,
+	unsigned long options,
+	int expirationSeconds,
+	int version)
+{
+// https://www.mongodb.com/docs/manual/reference/command/createIndexes/
+
+	MongoDB::Document::Ptr keys = new MongoDB::Document();
+
+	for (const auto& [name, ascending]: indexedFields) {
+		keys->add(name, ascending ? 1 : -1);
+	}
+
+	MongoDB::Document::Ptr index = new MongoDB::Document();
+	if (!indexName.empty())
+	{
+		index->add("name", indexName);
+	}
+	index->add("key", keys);
+	index->add("ns", _dbname + "." + collection);
+	index->add("name", indexName);
+
+	if (options & INDEX_UNIQUE) {
+		index->add("unique", true);
+	}
+	if (options & INDEX_BACKGROUND) {
+		index->add("background", true);
+	}
+	if (options & INDEX_SPARSE) {
+		index->add("sparse", true);
+	}
+	if (expirationSeconds > 0) {
+		index->add("expireAfterSeconds", static_cast<Poco::Int32>(expirationSeconds));
+	}
+	if (version > 0) {
+		index->add("version", static_cast<Poco::Int32>(version));
+	}
+
+	MongoDB::Array::Ptr indexes = new MongoDB::Array();
+	indexes->add(index);
+
+	auto request = createOpMsgMessage(collection);
+	request->setCommandName(OpMsgMessage::CMD_CREATE_INDEXES);
+	request->body().add("indexes", indexes);
+
+	OpMsgMessage response;
+	connection.sendRequest(*request, response);
+
+	MongoDB::Document::Ptr result = new MongoDB::Document(response.body());
+
+	return result;
+}
 
 Document::Ptr Database::getLastErrorDoc(Connection& connection) const
 {

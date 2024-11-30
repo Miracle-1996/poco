@@ -45,6 +45,15 @@ public:
 	virtual ~Database();
 		/// Destroys the Database.
 
+	enum IndexOptions {
+		INDEX_UNIQUE        = 1 << 0,
+		INDEX_SPARSE        = 1 << 1,
+		INDEX_BACKGROUND    = 1 << 2
+	};
+
+	using FieldIndex = std::tuple<std::string, bool>;
+	using IndexedFields = std::vector<FieldIndex>;
+
 	const std::string& name() const;
 		/// Database name
 
@@ -121,6 +130,17 @@ public:
 		int ttl = 0);
 		/// Creates an index. The document returned is the result of a getLastError call.
 		/// For more info look at the ensureIndex information on the MongoDB website. (old wire protocol)
+
+	Document::Ptr createIndex(
+		Connection& connection,
+		const std::string& collection,
+		const IndexedFields& indexedFields,
+		const std::string &indexName,
+		unsigned long options = 0,
+		int expirationSeconds = 0,
+		int version = 0);
+		/// Creates an index. The document returned is the response body..
+		/// For more info look at the createIndex information on the MongoDB website. (new wire protocol)
 
 	POCO_DEPRECATED("Use new wire protocol")
 	Document::Ptr getLastErrorDoc(Connection& connection) const;
